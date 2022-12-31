@@ -12,6 +12,7 @@ final class RMSettingsViewController: UIViewController
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		setupNav()
+		setupView()
 	}
 }
 
@@ -21,5 +22,9 @@ private extension RMSettingsViewController
 		title = "Settings"
 		navigationController?.navigationBar.prefersLargeTitles = true
 		navigationItem.largeTitleDisplayMode = .automatic
+	}
+	
+	func setupView() {
+		view.backgroundColor = .systemBackground
 	}
 }

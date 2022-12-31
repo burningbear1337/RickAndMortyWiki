@@ -12,6 +12,7 @@ final class RMLocationViewController: UIViewController
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		setupNav()
+		setupView()
 	}
 }
 
@@ -23,4 +24,7 @@ private extension RMLocationViewController
 		navigationItem.largeTitleDisplayMode = .automatic
 	}
 
+	func setupView() {
+		view.backgroundColor = .systemBackground
+	}
 }
