@@ -23,6 +23,7 @@
 		D19ECFB4295FDB5400E695CD /* RMCharacter.swift in Sources */ = {isa = PBXBuildFile; fileRef = D19ECFB3295FDB5400E695CD /* RMCharacter.swift */; };
 		D19ECFB6295FDC0E00E695CD /* RMOrigin.swift in Sources */ = {isa = PBXBuildFile; fileRef = D19ECFB5295FDC0E00E695CD /* RMOrigin.swift */; };
 		D19ECFB8295FDC5E00E695CD /* RMSingleLocation.swift in Sources */ = {isa = PBXBuildFile; fileRef = D19ECFB7295FDC5E00E695CD /* RMSingleLocation.swift */; };
+		D19ECFBC29605CD100E695CD /* RMEpisode.swift in Sources */ = {isa = PBXBuildFile; fileRef = D19ECFBB29605CD100E695CD /* RMEpisode.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -44,6 +45,7 @@
 		D19ECFB3295FDB5400E695CD /* RMCharacter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RMCharacter.swift; sourceTree = "<group>"; };
 		D19ECFB5295FDC0E00E695CD /* RMOrigin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RMOrigin.swift; sourceTree = "<group>"; };
 		D19ECFB7295FDC5E00E695CD /* RMSingleLocation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RMSingleLocation.swift; sourceTree = "<group>"; };
+		D19ECFBB29605CD100E695CD /* RMEpisode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RMEpisode.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -120,6 +122,7 @@
 			isa = PBXGroup;
 			children = (
 				D19ECFA2295FD2C000E695CD /* RMLocation.swift */,
+				D19ECFBB29605CD100E695CD /* RMEpisode.swift */,
 				D19ECFB7295FDC5E00E695CD /* RMSingleLocation.swift */,
 				D19ECFB3295FDB5400E695CD /* RMCharacter.swift */,
 				D19ECFB5295FDC0E00E695CD /* RMOrigin.swift */,
@@ -219,6 +222,7 @@
 				D19ECF8F295FD0C100E695CD /* RMTabBarViewController.swift in Sources */,
 				D19ECF8B295FD0C100E695CD /* AppDelegate.swift in Sources */,
 				D19ECF8D295FD0C100E695CD /* SceneDelegate.swift in Sources */,
+				D19ECFBC29605CD100E695CD /* RMEpisode.swift in Sources */,
 				D19ECFA3295FD2C000E695CD /* RMLocation.swift in Sources */,
 				D19ECFAE295FDA4400E695CD /* RMService.swift in Sources */,
 			);
