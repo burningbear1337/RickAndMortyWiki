@@ -24,6 +24,8 @@
 		D19ECFB6295FDC0E00E695CD /* RMOrigin.swift in Sources */ = {isa = PBXBuildFile; fileRef = D19ECFB5295FDC0E00E695CD /* RMOrigin.swift */; };
 		D19ECFB8295FDC5E00E695CD /* RMSingleLocation.swift in Sources */ = {isa = PBXBuildFile; fileRef = D19ECFB7295FDC5E00E695CD /* RMSingleLocation.swift */; };
 		D19ECFBC29605CD100E695CD /* RMEpisode.swift in Sources */ = {isa = PBXBuildFile; fileRef = D19ECFBB29605CD100E695CD /* RMEpisode.swift */; };
+		D19ECFBE2961327A00E695CD /* RMCharacterStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = D19ECFBD2961327A00E695CD /* RMCharacterStatus.swift */; };
+		D19ECFC0296132E800E695CD /* RMCharacterGender.swift in Sources */ = {isa = PBXBuildFile; fileRef = D19ECFBF296132E800E695CD /* RMCharacterGender.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -46,6 +48,8 @@
 		D19ECFB5295FDC0E00E695CD /* RMOrigin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RMOrigin.swift; sourceTree = "<group>"; };
 		D19ECFB7295FDC5E00E695CD /* RMSingleLocation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RMSingleLocation.swift; sourceTree = "<group>"; };
 		D19ECFBB29605CD100E695CD /* RMEpisode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RMEpisode.swift; sourceTree = "<group>"; };
+		D19ECFBD2961327A00E695CD /* RMCharacterStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RMCharacterStatus.swift; sourceTree = "<group>"; };
+		D19ECFBF296132E800E695CD /* RMCharacterGender.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = RMCharacterGender.swift; path = ../../../../Documents/RMCharacterGender.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -125,6 +129,8 @@
 				D19ECFBB29605CD100E695CD /* RMEpisode.swift */,
 				D19ECFB7295FDC5E00E695CD /* RMSingleLocation.swift */,
 				D19ECFB3295FDB5400E695CD /* RMCharacter.swift */,
+				D19ECFBD2961327A00E695CD /* RMCharacterStatus.swift */,
+				D19ECFBF296132E800E695CD /* RMCharacterGender.swift */,
 				D19ECFB5295FDC0E00E695CD /* RMOrigin.swift */,
 			);
 			path = Models;
@@ -212,6 +218,8 @@
 			files = (
 				D19ECFB4295FDB5400E695CD /* RMCharacter.swift in Sources */,
 				D19ECFAB295FD37300E695CD /* RMSettingsViewController.swift in Sources */,
+				D19ECFBE2961327A00E695CD /* RMCharacterStatus.swift in Sources */,
+				D19ECFC0296132E800E695CD /* RMCharacterGender.swift in Sources */,
 				D19ECFA7295FD34E00E695CD /* RMLocationViewController.swift in Sources */,
 				D19ECFB8295FDC5E00E695CD /* RMSingleLocation.swift in Sources */,
 				D19ECFB2295FDAAA00E695CD /* RMEndpoint.swift in Sources */,
