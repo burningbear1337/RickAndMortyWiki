@@ -9,18 +9,17 @@ import UIKit
 
 final class RMCharacterViewController: UIViewController
 {
+	private let ui = RMCharactersListView()
+	
+	override func loadView() {
+		super.loadView()
+		view = ui
+	}
+	
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		setupNav()
 		setupView()
-		RMService.instance.execute(.listCharactersRequest, for: RMGetAllCharactersResponse.self) { result in
-			switch result {
-			case .success(let character):
-				print(character)
-			case .failure(let failure):
-				print(failure)
-			}
-		}
 	}
 }
 

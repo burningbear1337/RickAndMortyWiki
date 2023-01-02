@@ -28,6 +28,8 @@
 		D19ECFC0296132E800E695CD /* RMCharacterGender.swift in Sources */ = {isa = PBXBuildFile; fileRef = D19ECFBF296132E800E695CD /* RMCharacterGender.swift */; };
 		D19ECFC2296267E200E695CD /* RMServiceErrors.swift in Sources */ = {isa = PBXBuildFile; fileRef = D19ECFC1296267E200E695CD /* RMServiceErrors.swift */; };
 		D19ECFC42962687100E695CD /* RMAllCharactersType.swift in Sources */ = {isa = PBXBuildFile; fileRef = D19ECFC32962687100E695CD /* RMAllCharactersType.swift */; };
+		D19ECFC729626B8E00E695CD /* RMCharactersListViewViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D19ECFC629626B8E00E695CD /* RMCharactersListViewViewModel.swift */; };
+		D19ECFCA29626C7100E695CD /* RMCharactersListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D19ECFC929626C7100E695CD /* RMCharactersListView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -54,6 +56,8 @@
 		D19ECFBF296132E800E695CD /* RMCharacterGender.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = RMCharacterGender.swift; path = ../../../../Documents/RMCharacterGender.swift; sourceTree = "<group>"; };
 		D19ECFC1296267E200E695CD /* RMServiceErrors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RMServiceErrors.swift; sourceTree = "<group>"; };
 		D19ECFC32962687100E695CD /* RMAllCharactersType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RMAllCharactersType.swift; sourceTree = "<group>"; };
+		D19ECFC629626B8E00E695CD /* RMCharactersListViewViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RMCharactersListViewViewModel.swift; sourceTree = "<group>"; };
+		D19ECFC929626C7100E695CD /* RMCharactersListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RMCharactersListView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -86,6 +90,8 @@
 		D19ECF89295FD0C100E695CD /* RickAndMortyWiki */ = {
 			isa = PBXGroup;
 			children = (
+				D19ECFC829626C5500E695CD /* Views */,
+				D19ECFC529626B7200E695CD /* ViewModels */,
 				D19ECFAC295FDA3200E695CD /* APIClient */,
 				D19ECFA1295FD2B600E695CD /* Models */,
 				D19ECF9E295FD0E600E695CD /* App */,
@@ -150,6 +156,22 @@
 				D19ECFC1296267E200E695CD /* RMServiceErrors.swift */,
 			);
 			path = APIClient;
+			sourceTree = "<group>";
+		};
+		D19ECFC529626B7200E695CD /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+				D19ECFC629626B8E00E695CD /* RMCharactersListViewViewModel.swift */,
+			);
+			path = ViewModels;
+			sourceTree = "<group>";
+		};
+		D19ECFC829626C5500E695CD /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				D19ECFC929626C7100E695CD /* RMCharactersListView.swift */,
+			);
+			path = Views;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -234,7 +256,9 @@
 				D19ECFB6295FDC0E00E695CD /* RMOrigin.swift in Sources */,
 				D19ECFA9295FD35900E695CD /* RMEpisodeViewController.swift in Sources */,
 				D19ECFA5295FD31E00E695CD /* RMCharacterViewController.swift in Sources */,
+				D19ECFC729626B8E00E695CD /* RMCharactersListViewViewModel.swift in Sources */,
 				D19ECFC2296267E200E695CD /* RMServiceErrors.swift in Sources */,
+				D19ECFCA29626C7100E695CD /* RMCharactersListView.swift in Sources */,
 				D19ECF8F295FD0C100E695CD /* RMTabBarViewController.swift in Sources */,
 				D19ECF8B295FD0C100E695CD /* AppDelegate.swift in Sources */,
 				D19ECF8D295FD0C100E695CD /* SceneDelegate.swift in Sources */,
