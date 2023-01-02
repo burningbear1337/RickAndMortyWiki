@@ -27,7 +27,7 @@ final class RMRequest
 		}
 		
 		if queryParameters.isEmpty == false {
-			string += "?"
+			string += "/?"
 			let argumentString = queryParameters.compactMap({
 				guard let value = $0.value else { return nil }
 				return "\($0.name)=\(value)"
@@ -49,4 +49,9 @@ final class RMRequest
 		self.pathComponents = pathComponents
 		self.queryParameters = queryParameters
 	}
+}
+
+extension RMRequest
+{
+	static let listCharactersRequest = RMRequest(enpoint: .character)
 }
