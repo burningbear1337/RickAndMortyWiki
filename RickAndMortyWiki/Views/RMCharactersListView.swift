@@ -9,10 +9,6 @@ import UIKit
 
 final class RMCharactersListView: UIView
 {
-	private enum Constants
-	{
-		static let cellID = "RMCharacterCell"
-	}
 	
 	private let viewModel = RMCharactersListViewViewModel()
 	
@@ -25,10 +21,12 @@ final class RMCharactersListView: UIView
 	
 	private let collectionView: UICollectionView = {
 		let layout = UICollectionViewFlowLayout()
+		layout.scrollDirection = .vertical
+		layout.sectionInset = UIEdgeInsets(top: 10, left: 10, bottom: 0, right: 10)
 		let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
 		collectionView.translatesAutoresizingMaskIntoConstraints = false
-		collectionView.register(UICollectionViewCell.self,
-								forCellWithReuseIdentifier: Constants.cellID)
+		collectionView.register(RMCharacterCollectionViewCell.self,
+								forCellWithReuseIdentifier: RMCharacterCollectionViewCell.cellID)
 		collectionView.isHidden = true
 		collectionView.alpha = 0
 		return collectionView
@@ -36,24 +34,34 @@ final class RMCharactersListView: UIView
 
 	init() {
 		super.init(frame: .zero)
+		addSubViews()
 		setupSpinner()
 		spinner.startAnimating()
 		setupCollectionView()
+		viewModel.fetchCharacters {
+			DispatchQueue.main.asyncAfter(deadline: .now() + 1) { [weak self] in
+				guard let self = self else { return }
+				self.spinner.stopAnimating()
+				UIView.animate(withDuration: 1) {
+					self.collectionView.isHidden = false
+					self.collectionView.alpha = 1
+				}
+			}
+		}
 	}
 	
 	required init?(coder: NSCoder) {
 		fatalError("init(coder:) has not been implemented")
 	}
-	
-	public func configure() {
-		
-	}
 }
 
 private extension RMCharactersListView
 {
+	func addSubViews() {
+		addSubviews(spinner, collectionView)
+	}
+	
 	func setupSpinner() {
-		addSubview(spinner)
 		NSLayoutConstraint.activate([
 			spinner.heightAnchor.constraint(equalToConstant: 100),
 			spinner.widthAnchor.constraint(equalToConstant: 100),
@@ -63,7 +71,9 @@ private extension RMCharactersListView
 	}
 	
 	func setupCollectionView() {
-		addSubview(collectionView)
+		collectionView.delegate = viewModel
+		collectionView.dataSource = viewModel
+		
 		NSLayoutConstraint.activate([
 			collectionView.leadingAnchor.constraint(equalTo: leadingAnchor),
 			collectionView.trailingAnchor.constraint(equalTo: trailingAnchor),
