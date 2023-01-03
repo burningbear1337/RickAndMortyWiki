@@ -7,8 +7,15 @@
 
 import UIKit
 
+protocol RMCharactersListViewDelegate: AnyObject
+{
+	func rmCharacterListView(_ view: RMCharactersListView,
+							 didSelectCharacter character: RMCharacter)
+}
+
 final class RMCharactersListView: UIView
 {
+	public weak var delegate: RMCharactersListViewDelegate?
 	
 	private let viewModel = RMCharactersListViewViewModel()
 	
@@ -49,6 +56,10 @@ final class RMCharactersListView: UIView
 
 extension RMCharactersListView: RMCharactersListViewViewModelDelegate
 {
+	func didSelectCharacter(_ character: RMCharacter) {
+		delegate?.rmCharacterListView(self, didSelectCharacter: character)
+	}
+	
 	func didLoadInitialCharacters() {
 		DispatchQueue.main.async {
 			self.spinner.stopAnimating()

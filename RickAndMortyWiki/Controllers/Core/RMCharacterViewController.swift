@@ -18,8 +18,20 @@ final class RMCharacterViewController: UIViewController
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
+		ui.delegate = self
 		setupNav()
 		setupView()
+	}
+}
+
+extension RMCharacterViewController: RMCharactersListViewDelegate
+{
+	func rmCharacterListView(_ view: RMCharactersListView,
+							 didSelectCharacter character: RMCharacter) {
+		let viewModel = RMCharacterDetailViewViewModel(character: character)
+		let vc = RMCharacterDetailsViewController(viewModel: viewModel)
+		vc.navigationItem.largeTitleDisplayMode = .never
+		navigationController?.pushViewController(vc, animated: true)
 	}
 }
 

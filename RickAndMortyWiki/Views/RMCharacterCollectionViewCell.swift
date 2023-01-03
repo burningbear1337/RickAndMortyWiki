@@ -14,7 +14,8 @@ final class RMCharacterCollectionViewCell: UICollectionViewCell
 	private let imageView: UIImageView = {
 		let imageView = UIImageView()
 		imageView.translatesAutoresizingMaskIntoConstraints = false
-		imageView.contentMode = .scaleAspectFit
+		imageView.contentMode = .scaleAspectFill
+		imageView.layer.masksToBounds = true
 		return imageView
 	}()
 	
@@ -37,6 +38,19 @@ final class RMCharacterCollectionViewCell: UICollectionViewCell
 	override init(frame: CGRect) {
 		super.init(frame: frame)
 		setupStyle()
+		setupLayer()
+	}
+	
+	override func prepareForReuse() {
+		super.prepareForReuse()
+		self.nameLabel.text = nil
+		self.statusLabel.text = nil
+		self.imageView.image = nil
+	}
+	
+	override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+		super.traitCollectionDidChange(previousTraitCollection)
+		setupLayer()
 	}
 	
 	required init?(coder: NSCoder) {
@@ -63,11 +77,6 @@ final class RMCharacterCollectionViewCell: UICollectionViewCell
 private extension RMCharacterCollectionViewCell
 {
 	func setupStyle() {
-		contentView.layer.cornerRadius = 8
-		contentView.layer.shadowColor = UIColor.secondaryLabel.cgColor
-		contentView.layer.shadowRadius = 4
-		contentView.layer.shadowOffset = CGSize(width: -4, height: -4)
-		contentView.layer.shadowOpacity = 0.3
 		contentView.backgroundColor = .secondarySystemBackground
 		contentView.addSubviews(imageView, nameLabel, statusLabel)
 		
@@ -82,10 +91,18 @@ private extension RMCharacterCollectionViewCell
 			nameLabel.bottomAnchor.constraint(equalTo: statusLabel.topAnchor),
 			nameLabel.heightAnchor.constraint(equalToConstant: 30),
 			
-			imageView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 5),
-			imageView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -5),
+			imageView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+			imageView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
 			imageView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 5),
 			imageView.bottomAnchor.constraint(equalTo: nameLabel.topAnchor, constant: -5),
 		])
+	}
+	
+	func setupLayer() {
+		contentView.layer.cornerRadius = 8
+		contentView.layer.shadowColor = UIColor.secondaryLabel.cgColor
+		contentView.layer.shadowRadius = 4
+		contentView.layer.shadowOffset = CGSize(width: -4, height: 4)
+		contentView.layer.shadowOpacity = 0.3
 	}
 }
