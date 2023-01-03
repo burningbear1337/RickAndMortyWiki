@@ -34,24 +34,30 @@ final class RMCharactersListView: UIView
 
 	init() {
 		super.init(frame: .zero)
+		viewModel.delegate = self
 		addSubViews()
 		setupSpinner()
 		spinner.startAnimating()
 		setupCollectionView()
-		viewModel.fetchCharacters {
-			DispatchQueue.main.asyncAfter(deadline: .now() + 1) { [weak self] in
-				guard let self = self else { return }
-				self.spinner.stopAnimating()
-				UIView.animate(withDuration: 1) {
-					self.collectionView.isHidden = false
-					self.collectionView.alpha = 1
-				}
-			}
-		}
+		viewModel.fetchCharacters()
 	}
 	
 	required init?(coder: NSCoder) {
 		fatalError("init(coder:) has not been implemented")
+	}
+}
+
+extension RMCharactersListView: RMCharactersListViewViewModelDelegate
+{
+	func didLoadInitialCharacters() {
+		DispatchQueue.main.async {
+			self.spinner.stopAnimating()
+			UIView.animate(withDuration: 0.4) {
+				self.collectionView.isHidden = false
+				self.collectionView.alpha = 1
+			}
+			self.collectionView.reloadData()
+		}
 	}
 }
 

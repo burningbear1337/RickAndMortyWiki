@@ -6,17 +6,37 @@
 //
 import UIKit
 
+protocol RMCharactersListViewViewModelDelegate: AnyObject
+{
+	func didLoadInitialCharacters()
+}
+
 final class RMCharactersListViewViewModel: NSObject
 {
-	private var characters: [RMCharacter] = []
+	public weak var delegate: RMCharactersListViewViewModelDelegate?
 	
-	func fetchCharacters(completion: @escaping () -> Void) {
+	private var characters: [RMCharacter] = [] {
+		didSet {
+			for character in characters {
+				let viewModel = RMCharacterCollectionViewCellViewModel(
+					characterName: character.name,
+					characterStatus: character.status,
+					characterImageUrl: character.image
+				)
+				cellViewModels.append(viewModel)
+			}
+		}
+	}
+	
+	private var cellViewModels: [RMCharacterCollectionViewCellViewModel] = []
+	
+	func fetchCharacters() {
 		RMService.instance.execute(.listCharactersRequest,
 								   for: RMGetAllCharactersResponse.self) { [weak self] result in
 			switch result {
 			case .success(let characters):
 				self?.characters = characters.results
-				completion()
+				self?.delegate?.didLoadInitialCharacters()
 			case .failure(let error):
 				print(error)
 			}
@@ -29,7 +49,7 @@ extension RMCharactersListViewViewModel: UICollectionViewDelegate,
 										 UICollectionViewDelegateFlowLayout
 {
 	func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-		return characters.count
+		return cellViewModels.count
 	}
 	
 	func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -37,12 +57,7 @@ extension RMCharactersListViewViewModel: UICollectionViewDelegate,
 			withReuseIdentifier: RMCharacterCollectionViewCell.cellID,
 			for: indexPath
 		) as? RMCharacterCollectionViewCell else { return UICollectionViewCell()}
-		let character = characters[indexPath.row]
-		let viewModel = RMCharacterCollectionViewCellViewModel(
-			characterName: character.name,
-			characterStatus: character.status,
-			characterImageUrl: character.image
-		)
+		let viewModel = cellViewModels[indexPath.row]
 		cell.configure(with: viewModel)
 		return cell
 	}
