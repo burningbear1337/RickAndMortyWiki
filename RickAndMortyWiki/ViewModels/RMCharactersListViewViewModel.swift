@@ -74,12 +74,12 @@ final class RMCharactersListViewViewModel: NSObject
 //		) { [weak self] result in
 //			switch result {
 //			case .success(let allCharacterResponse):
+//				self?.isLoadingMoreCharacters = false
 //				print(allCharacterResponse.results.first?.name)
-//				print(self?.characters.count)
+//				print(allCharacterResponse.info.next)
 //				self?.info = allCharacterResponse.info
 //				self?.characters.append(contentsOf: allCharacterResponse.results)
 //				self?.delegate?.didLoadNewCharacters()
-//				self?.isLoadingMoreCharacters = false
 //			case .failure(let error):
 //				print(error)
 //				self?.isLoadingMoreCharacters = false
@@ -152,7 +152,10 @@ extension RMCharactersListViewViewModel: UICollectionViewDelegate,
 		let contentHeight = scrollView.contentSize.height
 		let scrollHeight = scrollView.frame.size.height
 		if offset + scrollHeight + 120 > contentHeight {
-			fetchAdditionalCharacters()
+			Timer.scheduledTimer(withTimeInterval: 0.3, repeats: false) { _ in
+				self.fetchAdditionalCharacters()
+			}
+			.invalidate()
 		}
 	}
 }
