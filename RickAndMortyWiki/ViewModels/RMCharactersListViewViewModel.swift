@@ -9,6 +9,7 @@ import UIKit
 protocol RMCharactersListViewViewModelDelegate: AnyObject
 {
 	func didLoadInitialCharacters()
+	func didLoadNewCharacters()
 	func didSelectCharacter(_ character: RMCharacter)
 }
 
@@ -22,7 +23,9 @@ final class RMCharactersListViewViewModel: NSObject
 					characterStatus: character.status,
 					characterImageUrl: character.image
 				)
-				cellViewModels.append(viewModel)
+				if !cellViewModels.contains(viewModel) {
+					cellViewModels.append(viewModel)
+				}
 			}
 		}
 	}
@@ -41,7 +44,47 @@ final class RMCharactersListViewViewModel: NSObject
 	
 	public func fetchAdditionalCharacters() {
 		isLoadingMoreCharacters = true
-		print(#function)
+		guard
+			let urlString = info?.next,
+			let url = URL(string: urlString),
+			let request = RMRequest(url: url)
+		else {
+			isLoadingMoreCharacters = false
+			return
+		}
+		print(url.absoluteString)
+		URLSession.shared.dataTask(with: url) { data, _ , _ in
+			guard let data = data else { return }
+			do {
+				let allCharacterResponse = try JSONDecoder().decode(RMGetAllCharactersResponse.self, from: data)
+				print(allCharacterResponse.results.first?.name)
+				self.info = allCharacterResponse.info
+				self.characters.append(contentsOf: allCharacterResponse.results)
+				self.delegate?.didLoadNewCharacters()
+				self.isLoadingMoreCharacters = false
+			}
+			catch {
+				print(error)
+				self.isLoadingMoreCharacters = false
+			}
+		}
+		.resume()
+//		RMService.instance.execute(
+//			request, for: RMGetAllCharactersResponse.self
+//		) { [weak self] result in
+//			switch result {
+//			case .success(let allCharacterResponse):
+//				print(allCharacterResponse.results.first?.name)
+//				print(self?.characters.count)
+//				self?.info = allCharacterResponse.info
+//				self?.characters.append(contentsOf: allCharacterResponse.results)
+//				self?.delegate?.didLoadNewCharacters()
+//				self?.isLoadingMoreCharacters = false
+//			case .failure(let error):
+//				print(error)
+//				self?.isLoadingMoreCharacters = false
+//			}
+//		}
 	}
 	
 	public func fetchCharacters() {
@@ -108,10 +151,8 @@ extension RMCharactersListViewViewModel: UICollectionViewDelegate,
 		let offset = scrollView.contentOffset.y
 		let contentHeight = scrollView.contentSize.height
 		let scrollHeight = scrollView.frame.size.height
-		
 		if offset + scrollHeight + 120 > contentHeight {
 			fetchAdditionalCharacters()
-			isLoadingMoreCharacters = true
 		}
 	}
 }

@@ -73,6 +73,12 @@ extension RMCharactersListView: RMCharactersListViewViewModelDelegate
 			self.collectionView.reloadData()
 		}
 	}
+	
+	func didLoadNewCharacters() {
+		DispatchQueue.main.async {
+			self.collectionView.reloadData()
+		}
+	}
 }
 
 private extension RMCharactersListView

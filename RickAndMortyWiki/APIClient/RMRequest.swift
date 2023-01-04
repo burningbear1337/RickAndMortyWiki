@@ -11,7 +11,7 @@ final class RMRequest
 {
 	private enum Constants
 	{
-		static let baseUrl = "https://rickandmortyapi.com/api"
+		static let baseUrl = "https://rickandmortyapi.com/api/"
 	}
 	
 	private let enpoint: RMEndpoint
@@ -20,7 +20,7 @@ final class RMRequest
 	
 	private var urlString: String {
 		var string = Constants.baseUrl
-		string += "/\(enpoint.rawValue)"
+		string += "\(enpoint.rawValue)"
 		
 		if pathComponents.isEmpty == false {
 			pathComponents.forEach { string += "/\($0)" }
@@ -48,6 +48,48 @@ final class RMRequest
 		self.enpoint = enpoint
 		self.pathComponents = pathComponents
 		self.queryParameters = queryParameters
+	}
+	
+	convenience init?(url: URL) {
+		let string = url.absoluteString
+		if string.contains(Constants.baseUrl) == false {
+			return nil
+		}
+		let trimmed = string.replacingOccurrences(of: Constants.baseUrl,
+												  with: "")
+		if trimmed.contains("/") {
+			let components = trimmed.components(separatedBy: "/")
+			if components.isEmpty == false {
+				if
+					let endpoint = components.first,
+					let rmEndpoint = RMEndpoint(rawValue: endpoint) {
+					self.init(enpoint: rmEndpoint)
+					return
+				}
+			}
+		}
+		else if trimmed.contains("?") {
+			let components = trimmed.components(separatedBy: "?")
+			if components.isEmpty == false {
+				guard
+					let endpoint = components.first,
+					let queryItemsString = components.last
+				else { return nil }
+				let queryItems: [URLQueryItem] =
+				queryItemsString.components(separatedBy: "&").compactMap {
+					guard $0.contains("=") else { return URLQueryItem(name: "", value: nil) }
+					let parts = $0.components(separatedBy: "=")
+					return URLQueryItem(name: parts.first ?? "", value: parts.last ?? nil)
+				}
+				
+				if let rmEndpoint = RMEndpoint(rawValue: endpoint) {
+					self.init(enpoint: rmEndpoint, queryParameters: queryItems)
+					return
+				}
+			}
+		}
+		
+		return nil
 	}
 }
 

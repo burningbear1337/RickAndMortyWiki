@@ -6,8 +6,18 @@
 //
 import UIKit
 
-final class RMCharacterCollectionViewCellViewModel
+final class RMCharacterCollectionViewCellViewModel: Hashable, Equatable
 {
+	static func == (lhs: RMCharacterCollectionViewCellViewModel, rhs: RMCharacterCollectionViewCellViewModel) -> Bool {
+		lhs.hashValue == rhs.hashValue
+	}
+	
+	func hash(into hasher: inout Hasher) {
+		hasher.combine(characterName)
+		hasher.combine(characterStatus)
+		hasher.combine(characterImageUrl)
+	}
+	
 	public let characterName: String
 	public var characterStatusText: String {
 		"Status: \(characterStatus.text)"
