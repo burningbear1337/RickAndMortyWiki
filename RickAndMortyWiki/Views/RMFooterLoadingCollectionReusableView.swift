@@ -12,7 +12,7 @@ final class RMFooterLoadingCollectionReusableView: UICollectionReusableView
 	static let identifier = "RMFooterLoadingCollectionReusableView"
 	
 	private let spinner: UIActivityIndicatorView = {
-		let spinner = UIActivityIndicatorView(style: .medium)
+		let spinner = UIActivityIndicatorView(style: .large)
 		spinner.translatesAutoresizingMaskIntoConstraints = false
 		spinner.hidesWhenStopped = true
 		return spinner

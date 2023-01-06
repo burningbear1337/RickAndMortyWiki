@@ -9,7 +9,7 @@ import UIKit
 protocol RMCharactersListViewViewModelDelegate: AnyObject
 {
 	func didLoadInitialCharacters()
-	func didLoadNewCharacters()
+	func didLoadNewCharacters(at index: [IndexPath])
 	func didSelectCharacter(_ character: RMCharacter)
 }
 
@@ -19,7 +19,7 @@ final class RMCharactersListViewViewModel: NSObject
 	private var cellViewModels: [RMCharacterCollectionViewCellViewModel] = []
 	
 	private var info: RMGetAllCharactersResponse.RMGetAllCharactersResponseInfo?
-	
+	private var originalCount: Int = 0
 	private var isLoadingMoreCharacters = false
 	
 	public weak var delegate: RMCharactersListViewViewModelDelegate?
@@ -49,9 +49,12 @@ final class RMCharactersListViewViewModel: NSObject
 						self?.cellViewModels.append(model)
 					}
 				}
+				let firstIndex = (characters.results.first?.id ?? 0) - 1
+				let lastIndex = characters.results.last?.id ?? 0
+				let indices: [IndexPath] = Array(firstIndex..<lastIndex).compactMap { IndexPath(row: $0, section: 0)}
 				DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+					self?.delegate?.didLoadNewCharacters(at: indices)
 					self?.isLoadingMoreCharacters = false
-					self?.delegate?.didLoadNewCharacters()
 				}
 			case .failure(let error):
 				self?.isLoadingMoreCharacters = false
@@ -66,6 +69,7 @@ final class RMCharactersListViewViewModel: NSObject
 			switch result {
 			case .success(let characters):
 				self?.characters = characters.results
+				self?.originalCount = characters.results.count
 				self?.info = characters.info
 				characters.results.forEach {
 					guard let model = self?.makeRMCharacterCollectionViewCellViewModel($0) else {
