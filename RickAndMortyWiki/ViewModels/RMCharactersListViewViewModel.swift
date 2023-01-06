@@ -37,7 +37,6 @@ final class RMCharactersListViewViewModel: NSObject
 		else {
 			return
 		}
-		print(request.url)
 		RMService.instance.execute(
 			request, for: RMGetAllCharactersResponse.self
 		) { [weak self] result in
@@ -45,16 +44,19 @@ final class RMCharactersListViewViewModel: NSObject
 			case .success(let characters):
 				self?.characters = characters.results
 				self?.info = characters.info
+				print(self?.info?.next)
 				characters.results.forEach {
 					if let model = self?.makeRMCharacterCollectionViewCellViewModel($0) {
 						self?.cellViewModels.append(model)
 					}
 				}
-				self?.delegate?.didLoadNewCharacters()
-				self?.isLoadingMoreCharacters = false
+				DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+					self?.isLoadingMoreCharacters = false
+					self?.delegate?.didLoadNewCharacters()
+				}
 			case .failure(let error):
-				print(error)
 				self?.isLoadingMoreCharacters = false
+				print(error)
 			}
 		}
 	}
