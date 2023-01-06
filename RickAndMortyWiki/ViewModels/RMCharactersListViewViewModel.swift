@@ -44,7 +44,6 @@ final class RMCharactersListViewViewModel: NSObject
 			case .success(let characters):
 				self?.characters = characters.results
 				self?.info = characters.info
-				print(self?.info?.next)
 				characters.results.forEach {
 					if let model = self?.makeRMCharacterCollectionViewCellViewModel($0) {
 						self?.cellViewModels.append(model)
@@ -68,7 +67,6 @@ final class RMCharactersListViewViewModel: NSObject
 			case .success(let characters):
 				self?.characters = characters.results
 				self?.info = characters.info
-				print(self?.info?.next)
 				characters.results.forEach {
 					guard let model = self?.makeRMCharacterCollectionViewCellViewModel($0) else {
 						return
@@ -145,4 +143,3 @@ extension RMCharactersListViewViewModel: UICollectionViewDelegate,
 		}
 	}
 }
-
