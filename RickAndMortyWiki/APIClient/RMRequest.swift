@@ -20,10 +20,10 @@ final class RMRequest
 	
 	private var urlString: String {
 		var string = Constants.baseUrl
-		string += "\(enpoint.rawValue)"
+		string += "\(enpoint.rawValue)/"
 		
 		if pathComponents.isEmpty == false {
-			pathComponents.forEach { string += "/\($0)" }
+			pathComponents.forEach { string += "\($0)/" }
 		}
 		
 		if queryParameters.isEmpty == false {
@@ -55,9 +55,10 @@ final class RMRequest
 		if string.contains(Constants.baseUrl) == false {
 			return nil
 		}
-		let trimmed = string.replacingOccurrences(of: Constants.baseUrl,
-												  with: "")
-		if trimmed.contains("/") {
+		let trimmed = string
+			.replacingOccurrences(of: Constants.baseUrl, with: "")
+			.replacingOccurrences(of: "/", with: "")
+		if trimmed.contains("/") && trimmed.contains("?") == false {
 			let components = trimmed.components(separatedBy: "/")
 			if components.isEmpty == false {
 				if
@@ -74,7 +75,9 @@ final class RMRequest
 				guard
 					let endpoint = components.first,
 					let queryItemsString = components.last
-				else { return nil }
+				else {
+					return nil
+				}
 				let queryItems: [URLQueryItem] =
 				queryItemsString.components(separatedBy: "&").compactMap {
 					guard $0.contains("=") else { return URLQueryItem(name: "", value: nil) }
@@ -84,7 +87,7 @@ final class RMRequest
 				
 				if let rmEndpoint = RMEndpoint(rawValue: endpoint) {
 					self.init(enpoint: rmEndpoint, queryParameters: queryItems)
-					return
+					return 
 				}
 			}
 		}

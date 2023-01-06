@@ -15,21 +15,7 @@ protocol RMCharactersListViewViewModelDelegate: AnyObject
 
 final class RMCharactersListViewViewModel: NSObject
 {
-	private var characters: [RMCharacter] = [] {
-		didSet {
-			for character in characters {
-				let viewModel = RMCharacterCollectionViewCellViewModel(
-					characterName: character.name,
-					characterStatus: character.status,
-					characterImageUrl: character.image
-				)
-				if !cellViewModels.contains(viewModel) {
-					cellViewModels.append(viewModel)
-				}
-			}
-		}
-	}
-	
+	private var characters: [RMCharacter] = []
 	private var cellViewModels: [RMCharacterCollectionViewCellViewModel] = []
 	
 	private var info: RMGetAllCharactersResponse.RMGetAllCharactersResponseInfo?
@@ -49,42 +35,28 @@ final class RMCharactersListViewViewModel: NSObject
 			let url = URL(string: urlString),
 			let request = RMRequest(url: url)
 		else {
-			isLoadingMoreCharacters = false
 			return
 		}
-		print(url.absoluteString)
-		URLSession.shared.dataTask(with: url) { data, _ , _ in
-			guard let data = data else { return }
-			do {
-				let allCharacterResponse = try JSONDecoder().decode(RMGetAllCharactersResponse.self, from: data)
-				print(allCharacterResponse.results.first?.name)
-				self.info = allCharacterResponse.info
-				self.characters.append(contentsOf: allCharacterResponse.results)
-				self.delegate?.didLoadNewCharacters()
-				self.isLoadingMoreCharacters = false
-			}
-			catch {
+		print(request.url)
+		RMService.instance.execute(
+			request, for: RMGetAllCharactersResponse.self
+		) { [weak self] result in
+			switch result {
+			case .success(let characters):
+				self?.characters = characters.results
+				self?.info = characters.info
+				characters.results.forEach {
+					if let model = self?.makeRMCharacterCollectionViewCellViewModel($0) {
+						self?.cellViewModels.append(model)
+					}
+				}
+				self?.delegate?.didLoadNewCharacters()
+				self?.isLoadingMoreCharacters = false
+			case .failure(let error):
 				print(error)
-				self.isLoadingMoreCharacters = false
+				self?.isLoadingMoreCharacters = false
 			}
 		}
-		.resume()
-//		RMService.instance.execute(
-//			request, for: RMGetAllCharactersResponse.self
-//		) { [weak self] result in
-//			switch result {
-//			case .success(let allCharacterResponse):
-//				self?.isLoadingMoreCharacters = false
-//				print(allCharacterResponse.results.first?.name)
-//				print(allCharacterResponse.info.next)
-//				self?.info = allCharacterResponse.info
-//				self?.characters.append(contentsOf: allCharacterResponse.results)
-//				self?.delegate?.didLoadNewCharacters()
-//			case .failure(let error):
-//				print(error)
-//				self?.isLoadingMoreCharacters = false
-//			}
-//		}
 	}
 	
 	public func fetchCharacters() {
@@ -94,11 +66,26 @@ final class RMCharactersListViewViewModel: NSObject
 			case .success(let characters):
 				self?.characters = characters.results
 				self?.info = characters.info
+				print(self?.info?.next)
+				characters.results.forEach {
+					guard let model = self?.makeRMCharacterCollectionViewCellViewModel($0) else {
+						return
+					}
+					self?.cellViewModels.append(model)
+				}
 				self?.delegate?.didLoadInitialCharacters()
 			case .failure(let error):
 				print(error)
 			}
 		}
+	}
+	
+	private func makeRMCharacterCollectionViewCellViewModel(
+		_ character: RMCharacter
+	) -> RMCharacterCollectionViewCellViewModel {
+		return RMCharacterCollectionViewCellViewModel(characterName: character.name,
+													  characterStatus: character.status,
+													  characterImageUrl: character.image)
 	}
 }
 
@@ -152,10 +139,7 @@ extension RMCharactersListViewViewModel: UICollectionViewDelegate,
 		let contentHeight = scrollView.contentSize.height
 		let scrollHeight = scrollView.frame.size.height
 		if offset + scrollHeight + 120 > contentHeight {
-			Timer.scheduledTimer(withTimeInterval: 0.3, repeats: false) { _ in
-				self.fetchAdditionalCharacters()
-			}
-			.invalidate()
+			self.fetchAdditionalCharacters()
 		}
 	}
 }
