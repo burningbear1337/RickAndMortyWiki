@@ -15,7 +15,12 @@ final class RMCharacterDetailViewViewModel
 		character.name.uppercased()
 	}
 	
+	public var requestUrl: URL? {
+		URL(string: character.url)
+	}
+	
 	init(character: RMCharacter) {
 		self.character = character
+		dump(character)
 	}
 }

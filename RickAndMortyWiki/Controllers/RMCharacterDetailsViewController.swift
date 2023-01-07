@@ -10,6 +10,7 @@ import UIKit
 final class RMCharacterDetailsViewController: UIViewController
 {
 	private let viewModel: RMCharacterDetailViewViewModel
+	private lazy var ui = RMCharacterDetailView(characterViewModel: self.viewModel)
 	
 	init(viewModel: RMCharacterDetailViewViewModel) {
 		self.viewModel = viewModel
@@ -20,9 +21,31 @@ final class RMCharacterDetailsViewController: UIViewController
 		fatalError("init(coder:) has not been implemented")
 	}
 	
+	override func loadView() {
+		super.loadView()
+		view = ui
+	}
+	
 	override func viewDidLoad() {
 		super.viewDidLoad()
-		view.backgroundColor = .systemBackground
+		setupNav()
+	}
+}
+
+private extension RMCharacterDetailsViewController
+{
+	func setupNav() {
 		title = viewModel.title
+		navigationItem.rightBarButtonItem = UIBarButtonItem(
+			image: UIImage(systemName: "square.and.arrow.up"),
+			style: .plain,
+			target: self,
+			action: #selector(didTapShare)
+		)
+	}
+	
+	@objc
+	func didTapShare() {
+		print("sharing")
 	}
 }

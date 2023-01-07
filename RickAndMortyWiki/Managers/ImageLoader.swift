@@ -19,19 +19,18 @@ final class RMImageLoader
 		let key = url.absoluteString as NSString
 		if let cachedImage = cache.object(forKey: key) {
 			completion(.success(cachedImage))
+			return
 		}
-		else {
-			let request = URLRequest(url: url)
-			URLSession.shared.dataTask(with: request) { data, _, error in
-				guard let data = data, error == nil else {
-					completion(.failure(URLError(.badServerResponse)))
-					return
-				}
-				guard let image = UIImage(data: data) else { return }
-				self.cache.setObject(image, forKey: key)
-				completion(.success(image))
+		let request = URLRequest(url: url)
+		URLSession.shared.dataTask(with: request) { data, _, error in
+			guard let data = data, error == nil else {
+				completion(.failure(URLError(.badServerResponse)))
+				return
 			}
-			.resume()
+			guard let image = UIImage(data: data) else { return }
+			self.cache.setObject(image, forKey: key)
+			completion(.success(image))
 		}
+		.resume()
 	}
 }
