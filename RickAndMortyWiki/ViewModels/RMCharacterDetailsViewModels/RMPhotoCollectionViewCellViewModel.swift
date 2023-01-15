@@ -15,7 +15,10 @@ final class RMPhotoCollectionViewCellViewModel
 	}
 	
 	public func fetchImage(completion: @escaping (Result<UIImage, Error>) -> Void) {
-		guard let url = URL(string: urlString) else { return }
+		guard let url = URL(string: urlString) else {
+			completion(.failure(URLError(.badURL)))
+			return
+		}
 		RMImageLoader.instance.loadImage(for: url) { result in
 			switch result {
 			case .success(let image):

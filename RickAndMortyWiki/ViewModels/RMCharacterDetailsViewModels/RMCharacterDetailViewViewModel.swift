@@ -211,7 +211,7 @@ extension RMCharacterDetailViewViewModel
 
 		let group = NSCollectionLayoutGroup.horizontal(
 			layoutSize: NSCollectionLayoutSize(
-				widthDimension: .fractionalWidth(0.3),
+				widthDimension: .fractionalWidth(0.8),
 				heightDimension: .absolute(150)
 			),
 			subitems: [item]
